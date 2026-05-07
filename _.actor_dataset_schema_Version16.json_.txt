@@ -1,0 +1,66 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "url": {
+            "type": "string",
+            "title": "Monitored URL"
+        },
+        "timeChecked": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Check Date"
+        },
+        "changeDetected": {
+            "type": "boolean",
+            "title": "Change Detected"
+        },
+        "oldContentExcerpt": {
+            "type": "string",
+            "title": "Old Content Excerpt"
+        },
+        "newContentExcerpt": {
+            "type": "string",
+            "title": "New Content Excerpt"
+        },
+        "keywordsMatched": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "title": "Matched Keywords"
+        },
+        "alertFlag": {
+            "type": "boolean",
+            "title": "Alert Generated"
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Overview",
+            "transformation": {
+                "fields": ["url", "timeChecked", "changeDetected", "alertFlag"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "url": {
+                        "label": "Monitored URL",
+                        "format": "link"
+                    },
+                    "timeChecked": {
+                        "label": "Check Date",
+                        "format": "datetime-local"
+                    },
+                    "changeDetected": {
+                        "label": "Change Detected",
+                        "format": "boolean"
+                    },
+                    "alertFlag": {
+                        "label": "Alert Generated",
+                        "format": "boolean"
+                    }
+                }
+            }
+        }
+    }
+}

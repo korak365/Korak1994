@@ -1,0 +1,37 @@
+{
+    "title": "Input Schema for ToS Change Tracker",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "tosUrls": {
+            "title": "ToS/Privacy URLs",
+            "type": "array",
+            "description": "List of ToS or Privacy Policy URLs to monitor for changes.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://example.com/terms" },
+                { "url": "https://example.com/privacy" }
+            ]
+        },
+        "alertKeywords": {
+            "title": "Alert Keywords",
+            "type": "array",
+            "description": "Keywords to flag in changes (e.g., 'data sharing', 'third party', 'arbitration').",
+            "editor": "stringArray",
+            "default": ["data sharing", "third party", "tracking", "arbitration"]
+        },
+        "frequency": {
+            "title": "Frequency of Checks",
+            "type": "string",
+            "description": "How frequently to check for updates (e.g., 'daily', 'weekly').",
+            "default": "daily"
+        },
+        "maxRequestsPerRun": {
+            "title": "Maximum Requests per Run",
+            "type": "integer",
+            "description": "Limit the number of URLs scraped each run.",
+            "default": 10
+        }
+    },
+    "required": ["tosUrls"]
+}

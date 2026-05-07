@@ -1,0 +1,59 @@
+// Import Apify SDK
+import { Actor } from 'apify';
+import { Dataset, KeyValueStore } from 'apify';
+
+await Actor.init();
+
+const { tosUrls = [], alertKeywords = [], maxRequestsPerRun = 10 } = (await Actor.getInput()) || {};
+const stateStore = await KeyValueStore.open('TOS_CHANGE_TRACKER_STATE');
+let state = (await stateStore.getValue('currentState')) || {}; // Load saved state
+
+// Function to compare content and detect changes
+const detectChanges = (oldContent, newContent, keywords) => {
+    const changeDetected = oldContent !== newContent;
+    const matchedKeywords = [];
+
+    if (changeDetected) {
+        // Check for keywords in the new content
+        keywords.forEach((keyword) => {
+            if (newContent.includes(keyword)) {
+                matchedKeywords.push(keyword);
+            }
+        });
+    }
+
+    return { changeDetected, matchedKeywords };
+};
+
+// Process each URL
+for (const url of tosUrls.slice(0, maxRequestsPerRun)) {
+    console.log(`Checking ${url}`);
+    const response = await fetch(url);
+    const newContent = await response.text();
+    const oldContent = state[url] || '';
+
+    // Detect changes and keywords
+    const { changeDetected, matchedKeywords } = detectChanges(oldContent, newContent, alertKeywords);
+    const alertFlag = changeDetected && matchedKeywords.length > 0;
+
+    // Save results to dataset
+    await Dataset.pushData({
+        url,
+        timeChecked: new Date().toISOString(),
+        changeDetected,
+        oldContentExcerpt: oldContent.slice(0, 200),
+        newContentExcerpt: newContent.slice(0, 200),
+        keywordsMatched: matchedKeywords,
+        alertFlag,
+    });
+
+    // Update state
+    if (changeDetected) {
+        state[url] = newContent;
+    }
+}
+
+// Save the updated state
+await stateStore.setValue('currentState', state);
+
+await Actor.exit();

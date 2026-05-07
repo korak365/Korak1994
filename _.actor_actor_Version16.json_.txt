@@ -1,0 +1,17 @@
+{
+    "actorSpecification": 1,
+    "name": "tos-change-tracker",
+    "title": "Terms of Service Change Tracker",
+    "description": "Detects and alerts users about changes to a company's Terms of Service or Privacy Policy.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ai-generated-actor",
+        "generatedBy": "copilot-2026"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "dockerfile": "../Dockerfile"
+}

@@ -1,0 +1,11 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Output Schema for ToS Change Tracker",
+    "properties": {
+        "overview": {
+            "type": "string",
+            "title": "Change Log Overview",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        }
+    }
+}
